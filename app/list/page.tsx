@@ -37,27 +37,35 @@ export default function ListPage() {
             + Nuovo
           </Link>
         </div>
-        
+
         <header style={{ marginBottom: '32px' }}>
           <h1 className="h1-super" style={{ fontSize: '2.2rem' }}>I tuoi Task</h1>
           <p className="p-muted">Hai {todos.filter(t => !t.completed).length} attività in sospeso.</p>
         </header>
-        
+
         <div className="todo-list-container" style={{ display: 'grid', gap: '12px' }}>
           {todos.map((todo) => (
             <div key={todo.id} className="todo-item-card">
               <label style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: 1, cursor: 'pointer' }}>
-                <input 
-                  type="checkbox" 
-                  checked={todo.completed} 
+                <input
+                  type="checkbox"
+                  checked={todo.completed}
                   onChange={() => toggleTodo(todo.id)}
                   className="custom-checkbox"
                 />
-                <span className={`todo-text ${todo.completed ? 'completed' : ''}`}>
-                  {todo.text}
-                </span>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span className={`todo-text ${todo.completed ? "completed" : ""}`}>
+                    {todo.text}
+                  </span>
+
+                  {todo.dueDate && (
+                    <small style={{ opacity: 0.6, fontSize: "12px" }}>
+                      📅 Scadenza: {todo.dueDate}
+                    </small>
+                  )}
+                </div>
               </label>
-              <button 
+              <button
                 onClick={() => deleteTodo(todo.id)}
                 className="delete-btn"
                 title="Elimina task"
