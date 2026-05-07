@@ -195,3 +195,33 @@ body {
   background: #fee2e2;
   color: #ef4444;
 }
+
+/* Aggiungi questo in fondo a app/globals.css se vuoi un feedback più "premium" */
+.btn-black {
+  letter-spacing: -0.01em;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.btn-black:active {
+  transform: scale(0.96);
+  /* Effetto pressione del tasto reale */
+}
+
+.btn-ghost {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  width: 100%;
+  /* Occupa tutto il contenitore maxWidth di 300px */
+  box-sizing: border-box;
+}
+
+.btn-ghost:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
