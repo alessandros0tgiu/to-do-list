@@ -171,11 +171,18 @@ export default function ListPage() {
               el.style.transform = "";
               el.style.background = "";
 
+              // Aggiungi una soglia minima (es. 10px) per evitare micro-swipe involontari
+              if (Math.abs(diff) < 10) return;
+
               if (diff > 80) {
                 toggleTodo(todo.id);
               } else if (diff < -80) {
                 deleteTodo(todo.id);
               }
+
+              // Resetta il valore dopo la fine del tocco
+              touchCurrentX.current = 0;
+              touchStartX.current = 0;
             };
 
             return (

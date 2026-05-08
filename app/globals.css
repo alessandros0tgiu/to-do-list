@@ -388,3 +388,132 @@ body {
 .todo-item-card:active {
   cursor: grabbing;
 }
+
+.todo-item-card {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease,
+    background 0.3s ease;
+}
+
+/* Quando elimini, aggiungi una classe temporanea via JS */
+.removing {
+  transform: translateX(-100%) !important;
+  opacity: 0;
+}
+.quick-stats-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 35px;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.stat-pill strong {
+  background: var(--accent-soft);
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.stat-pill.red strong {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.stat-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+/* ===== AGGIORNAMENTO LAYOUT ===== */
+.cta-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* Query per schermi più grandi (Tablet/PC) */
+@media (min-width: 480px) {
+  .cta-container {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .btn-black {
+    flex: 2; /* Il tasto "Nuovo" prende più spazio */
+  }
+  
+  .btn-ghost {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ===== BOTTONI REVISITATI ===== */
+.btn-black {
+  background: var(--accent);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-black:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  background: #1a1a1a;
+}
+
+.btn-black:active {
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 16px 24px;
+  border-radius: 16px;
+  cursor: pointer;
+  color: var(--text-main);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-ghost:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* Miglioramento pillole statistiche */
+.quick-stats-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 30px 0;
+}

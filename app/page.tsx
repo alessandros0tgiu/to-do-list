@@ -1,48 +1,62 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getTodos } from "@/lib/storage";
+import { isToday, isOverdue } from "@/lib/date";
+import { Todo } from "@/types/todo";
 
 export default function HomePage() {
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    setTodos(getTodos());
+  }, []);
+
+  const todayCount = todos.filter(t => isToday(t.dueDate) && !t.completed).length;
+  const overdueCount = todos.filter(t => isOverdue(t.dueDate) && !t.completed).length;
+
   return (
-    <div className="page-wrapper">
-      <div className="glass-panel" style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        textAlign: 'center' 
-      }}>
+    <main className="page-wrapper">
+      <div className="glass-panel">
         
-        <header style={{ marginBottom: '48px' }}>
+        <header style={{ textAlign: 'center' }}>
           <h1 className="h1-super">To-Do-List</h1>
           <p className="p-muted">
-            L'essenziale per la tua produttività. <br />
-            Organizza i tuoi impegni con chiarezza e stile.
+            Gestisci i tuoi impegni quotidiani <br /> 
+            con un'interfaccia pulita e veloce.
           </p>
+
+          {/* 📊 QUICK STATS PILLS - Ora in Grid */}
+          <div className="quick-stats-container">
+            <Link href="/list?filter=today" className="stat-pill">
+              <span>📅 Oggi</span>
+              <strong>{todayCount}</strong>
+            </Link>
+            
+            <Link href="/list?filter=overdue" className={`stat-pill ${overdueCount > 0 ? 'red' : ''}`}>
+              <span>⚠️ Scaduti</span>
+              <strong>{overdueCount}</strong>
+            </Link>
+          </div>
         </header>
         
-        {/* Container dei tasti: allineamento e larghezza identica per entrambi */}
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column',
-          alignItems: 'center', // Centra i figli orizzontalmente
-          gap: '16px', 
-          width: '100%', 
-          maxWidth: '320px' 
-        }}>
-          <Link href="/add" className="btn-black" style={{ width: '100%' }}>
-            Nuovo Promemoria
+        {/* NAV - Responsive Stack */}
+        <nav className="cta-container">
+          <Link href="/add" className="btn-black">
+            <span>+</span> Nuovo Promemoria
           </Link>
           
-          <Link href="/list" className="btn-ghost" style={{ 
-            width: '100%',
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center'
-          }}>
-            Visualizza la tua lista
+          <Link href="/list" className="btn-ghost">
+            Vai alla Lista
           </Link>
-        </div>
+        </nav>
 
+        {/* Footer discreto opzionale */}
+        <footer style={{ marginTop: '40px', textAlign: 'center', opacity: 0.4, fontSize: '0.8rem' }}>
+          Totale task salvati: {todos.length}
+        </footer>
       </div>
-    </div>
+    </main>
   );
 }
