@@ -1,8 +1,10 @@
 "use client";
+
 import { TodoForm } from "@/components/todo-form";
 import { getTodos, saveTodos } from "@/lib/storage";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { parseInput } from "@/lib/parse";
 
 export default function AddPage() {
   const router = useRouter();
@@ -10,12 +12,15 @@ export default function AddPage() {
   const handleAdd = (text: string, dueDate?: string) => {
     const todos = getTodos();
 
+    // 🧠 PARSING INTELLIGENTE
+    const parsed = parseInput(text);
+
     saveTodos([
       {
         id: crypto.randomUUID(),
-        text,
+        text: parsed.text, // 👈 testo pulito
         completed: false,
-        dueDate: dueDate || undefined,
+        dueDate: parsed.dueDate || dueDate || undefined, // 👈 priorità parsing
       },
       ...todos,
     ]);

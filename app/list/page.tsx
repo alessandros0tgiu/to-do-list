@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Todo } from "@/types/todo";
 import { getTodos, saveTodos } from "@/lib/storage";
 import Link from "next/link";
@@ -12,6 +12,10 @@ export default function ListPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [mounted, setMounted] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
+
+  // ✅ FIX swipe stabile
+  const touchStartX = useRef(0);
+  const touchCurrentX = useRef(0);
 
   useEffect(() => {
     setTodos(getTodos());
@@ -41,7 +45,9 @@ export default function ListPage() {
 
   const completed = todos.filter((t) => t.completed).length;
   const pending = todos.filter((t) => !t.completed).length;
-  const progress = todos.length ? Math.round((completed / todos.length) * 100) : 0;
+  const progress = todos.length
+    ? Math.round((completed / todos.length) * 100)
+    : 0;
 
   if (!mounted) return null;
 
@@ -77,9 +83,8 @@ export default function ListPage() {
           </p>
         </header>
 
-        {/* 📊 DASHBOARD STATS */}
+        {/* 📊 STATS */}
         <div className="stats-card">
-
           <div className="stats-row">
             <div className="stat-box">
               <span className="stat-number">{progress}%</span>
@@ -141,41 +146,79 @@ export default function ListPage() {
           {filtered.map((todo) => {
             const overdue = isOverdue(todo.dueDate);
 
+            const handleTouchStart = (e: React.TouchEvent) => {
+              touchStartX.current = e.touches[0].clientX;
+            };
+
+            const handleTouchMove = (e: React.TouchEvent) => {
+              touchCurrentX.current = e.touches[0].clientX;
+              const diff = touchCurrentX.current - touchStartX.current;
+
+              const el = e.currentTarget as HTMLDivElement;
+              el.style.transform = `translateX(${diff}px)`;
+
+              if (diff > 0) {
+                el.style.background = "#dcfce7";
+              } else if (diff < 0) {
+                el.style.background = "#fee2e2";
+              }
+            };
+
+            const handleTouchEnd = (e: React.TouchEvent) => {
+              const diff = touchCurrentX.current - touchStartX.current;
+              const el = e.currentTarget as HTMLDivElement;
+
+              el.style.transform = "";
+              el.style.background = "";
+
+              if (diff > 80) {
+                toggleTodo(todo.id);
+              } else if (diff < -80) {
+                deleteTodo(todo.id);
+              }
+            };
+
             return (
-              <div
-                key={todo.id}
-                className={`todo-item-card ${overdue ? "overdue" : ""}`}
-              >
-                <label className="todo-left">
-                  <input
-                    type="checkbox"
-                    checked={todo.completed}
-                    onChange={() => toggleTodo(todo.id)}
-                    className="custom-checkbox"
-                  />
+              <div className="swipe-wrapper" key={todo.id}>
+                <div className="swipe-bg">
+                  <span className="swipe-action left">✔</span>
+                  <span className="swipe-action right">🗑</span>
+                </div>
 
-                  <div className="todo-text-wrapper">
-                    <span
-                      className={`todo-text ${todo.completed ? "completed" : ""}`}
-                    >
-                      {todo.text}
-                    </span>
-
-                    {todo.dueDate && (
-                      <small className="todo-date">
-                        📅 {todo.dueDate}
-                      </small>
-                    )}
-                  </div>
-                </label>
-
-                <button
-                  onClick={() => deleteTodo(todo.id)}
-                  className="delete-btn"
-                  title="Elimina task"
+                <div
+                  className={`todo-item-card ${overdue ? "overdue" : ""}`}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
                 >
-                  ✕
-                </button>
+                  <label className="todo-left">
+                    <input
+                      type="checkbox"
+                      checked={todo.completed}
+                      onChange={() => toggleTodo(todo.id)}
+                      className="custom-checkbox"
+                    />
+
+                    <div className="todo-text-wrapper">
+                      <span className={`todo-text ${todo.completed ? "completed" : ""}`}>
+                        {todo.text}
+                      </span>
+
+                      {todo.dueDate && (
+                        <small className="todo-date">
+                          📅 {todo.dueDate}
+                        </small>
+                      )}
+                    </div>
+                  </label>
+
+                  <button
+                    onClick={() => deleteTodo(todo.id)}
+                    className="delete-btn"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
             );
           })}

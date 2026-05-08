@@ -342,3 +342,49 @@ body {
   display: grid;
   gap: 12px;
 }
+
+/* ===== SWIPE WRAPPER ===== */
+.swipe-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.swipe-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  border-radius: 16px;
+  background: linear-gradient(to right, #dcfce7, #fee2e2);
+  opacity: 0.3;
+}
+
+/* ACTION ICONS */
+.swipe-action {
+  font-size: 18px;
+  opacity: 0.6;
+}
+
+.swipe-action.left {
+  color: #16a34a;
+}
+
+.swipe-action.right {
+  color: #dc2626;
+}
+
+/* CARD (importante override) */
+.todo-item-card {
+  position: relative;
+  z-index: 2;
+  background: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+}
+
+/* TOUCH FEEL */
+.todo-item-card:active {
+  cursor: grabbing;
+}
