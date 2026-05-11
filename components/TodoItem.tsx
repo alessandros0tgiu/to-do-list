@@ -13,6 +13,7 @@ interface TodoItemProps {
 
 export function TodoItem({ todo, overdue, onToggle, onDelete, onUpdate }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false); // Stato per l'animazione di uscita
   const [editText, setEditText] = useState(todo.text);
   const [editCat, setEditCat] = useState(todo.category || "Nessuna");
   const [availableCats, setAvailableCats] = useState<string[]>([]);
@@ -34,7 +35,15 @@ export function TodoItem({ todo, overdue, onToggle, onDelete, onUpdate }: TodoIt
     setIsEditing(false);
   };
 
-  // --- LOGICA SWIPE ORIGINALE ---
+  // Funzione per gestire l'eliminazione con animazione
+  const handleAnimateDelete = () => {
+    setIsRemoving(true);
+    setTimeout(() => {
+      onDelete(todo.id);
+    }, 300); // Deve corrispondere alla durata della transizione CSS
+  };
+
+  // --- LOGICA SWIPE ---
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -60,14 +69,19 @@ export function TodoItem({ todo, overdue, onToggle, onDelete, onUpdate }: TodoIt
       const parent = cardRef.current.parentElement;
       if (parent) parent.style.background = "";
     }
-    if (diff > 100) onToggle(todo.id);
-    else if (diff < -100) onDelete(todo.id);
+    
+    if (diff > 100) {
+      onToggle(todo.id);
+    } else if (diff < -100) {
+      handleAnimateDelete(); // Attiva animazione invece di delete immediato
+    }
+    
     touchStartX.current = 0;
     touchCurrentX.current = 0;
   };
 
   return (
-    <div className="swipe-wrapper">
+    <div className={`swipe-wrapper ${isRemoving ? "removing" : ""}`}>
       <div className="swipe-bg">
         <span className="swipe-action left">✔</span>
         <span className="swipe-action right">🗑️</span>
@@ -121,7 +135,6 @@ export function TodoItem({ todo, overdue, onToggle, onDelete, onUpdate }: TodoIt
                   {todo.text}
                 </span>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  {/* Badge per cartella esistente o placeholder per task senza cartella */}
                   <span 
                     className="badge-category" 
                     onClick={() => setIsEditing(true)}
@@ -146,7 +159,7 @@ export function TodoItem({ todo, overdue, onToggle, onDelete, onUpdate }: TodoIt
           </div>
         </div>
 
-        <button onClick={() => onDelete(todo.id)} className="delete-btn">✕</button>
+        <button onClick={handleAnimateDelete} className="delete-btn">✕</button>
       </div>
     </div>
   );

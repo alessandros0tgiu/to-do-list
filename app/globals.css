@@ -329,6 +329,9 @@ body {
 .swipe-wrapper {
   position: relative;
   overflow: hidden;
+  transition: all 0.3s ease;
+  max-height: 200px;
+  /* Altezza indicativa per l'animazione di chiusura */
 }
 
 .swipe-bg {
@@ -369,8 +372,15 @@ body {
 
 /* Quando elimini, aggiungi una classe temporanea via JS */
 .removing {
-  transform: translateX(-100%) !important;
+  transform: translateX(-110%);
+  /* Scivola fuori a sinistra */
   opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  pointer-events: none;
+  /* Evita tocchi fantasma durante l'uscita */
 }
 
 .stat-pill {
