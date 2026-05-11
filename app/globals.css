@@ -540,3 +540,33 @@ button:active {
     transform: translateY(0);
   }
 }
+/* Badge Categorie */
+.badge-category {
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.badge-category.lavoro { background: #e0f2fe; color: #0369a1; }
+.badge-category.personale { background: #f1f5f9; color: #475569; }
+.badge-category.spesa { background: #fef9c3; color: #a16207; }
+
+/* Mini filtri categoria */
+.filter-btn-sm {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.filter-btn-sm.active {
+  background: white;
+  border-color: var(--border);
+  color: var(--accent);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}

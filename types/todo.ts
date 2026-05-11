@@ -3,5 +3,6 @@ export type Todo = {
   text: string;
   completed: boolean;
   dueDate?: string;
-  dueTime?: string; // 👈 Aggiunto orario
+  dueTime?: string;
+  category?: string; // Può essere il nome di una cartella o "Nessuna"
 };
