@@ -2,5 +2,6 @@ export type Todo = {
   id: string;
   text: string;
   completed: boolean;
-  dueDate?: string; // 👈 nuova data opzionale
+  dueDate?: string;
+  dueTime?: string; // 👈 Aggiunto orario
 };

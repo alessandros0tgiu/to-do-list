@@ -21,13 +21,19 @@ export const isThisWeek = (dateStr?: string) => {
   return d >= start && d <= end;
 };
 
-export const isOverdue = (dateStr?: string) => {
+export const isOverdue = (dateStr?: string, timeStr?: string) => {
   if (!dateStr) return false;
 
-  const d = new Date(dateStr);
   const now = new Date();
+  
+  // Se abbiamo sia data che ora
+  if (timeStr) {
+    const combinedDate = new Date(`${dateStr}T${timeStr}`);
+    return combinedDate < now;
+  }
 
-  // scaduto se prima di oggi
+  // Altrimenti solo data (scade a fine giornata)
+  const d = new Date(dateStr);
   return d < new Date(now.toDateString());
 };
 

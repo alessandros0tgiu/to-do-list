@@ -67,8 +67,8 @@ export default function ListPage() {
           </div>
           <div className="progress-bar">
             {/* LARGHEZZA DINAMICA APPLICATA QUI */}
-            <div 
-              className="progress-fill" 
+            <div
+              className="progress-fill"
               style={{ width: `${progressPercentage}%` }}
             ></div>
           </div>
@@ -91,7 +91,8 @@ export default function ListPage() {
             <TodoItem
               key={todo.id}
               todo={todo}
-              overdue={isOverdue(todo.dueDate)}
+              // Passa entrambi i valori qui sotto! 👇
+              overdue={isOverdue(todo.dueDate, todo.dueTime)}
               onToggle={toggleTodo}
               onDelete={deleteTodo}
             />

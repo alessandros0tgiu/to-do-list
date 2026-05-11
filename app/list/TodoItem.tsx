@@ -22,11 +22,11 @@ export function TodoItem({ todo, overdue, onToggle, onDelete }: TodoItemProps) {
   const handleTouchMove = (e: React.TouchEvent) => {
     touchCurrentX.current = e.touches[0].clientX;
     const diff = touchCurrentX.current - touchStartX.current;
-    
+
     if (cardRef.current) {
       // Muoviamo la card seguendo il dito
       cardRef.current.style.transform = `translateX(${diff}px)`;
-      
+
       // Cambiamo il colore di sfondo dello swipe-wrapper sottostante per feedback visivo
       const parent = cardRef.current.parentElement;
       if (parent) {
@@ -38,7 +38,7 @@ export function TodoItem({ todo, overdue, onToggle, onDelete }: TodoItemProps) {
 
   const handleTouchEnd = () => {
     const diff = touchCurrentX.current - touchStartX.current;
-    
+
     // Reset stili visivi
     if (cardRef.current) {
       cardRef.current.style.transform = "";
@@ -89,7 +89,7 @@ export function TodoItem({ todo, overdue, onToggle, onDelete }: TodoItemProps) {
 
             {todo.dueDate && (
               <small className="todo-date">
-                📅 {todo.dueDate}
+                📅 {todo.dueDate} {todo.dueTime && ` 🕒 ${todo.dueTime}`}
               </small>
             )}
           </div>
