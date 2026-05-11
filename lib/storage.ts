@@ -6,7 +6,25 @@ const CAT_STORAGE_KEY = "my-categories-v1";
 export const getTodos = (): Todo[] => {
   if (typeof window === "undefined") return [];
   const data = localStorage.getItem(STORAGE_KEY);
-  return data ? JSON.parse(data) : [];
+  let todos: Todo[] = data ? JSON.parse(data) : [];
+
+  // Pulizia automatica Cestino: rimuove task eliminati da più di 24 ore
+  const now = Date.now();
+  const oneDay = 24 * 60 * 60 * 1000;
+  
+  const cleanedTodos = todos.filter(t => {
+    if (t.deletedAt) {
+      return (now - t.deletedAt) < oneDay;
+    }
+    return true;
+  });
+
+  // Se abbiamo rimosso task scaduti dal cestino, salviamo lo stato pulito
+  if (cleanedTodos.length !== todos.length) {
+    saveTodos(cleanedTodos);
+  }
+
+  return cleanedTodos;
 };
 
 export const saveTodos = (todos: Todo[]) => {

@@ -1,8 +1,9 @@
-export type Todo = {
+export interface Todo {
   id: string;
   text: string;
   completed: boolean;
+  category?: string;
   dueDate?: string;
   dueTime?: string;
-  category?: string; // Può essere il nome di una cartella o "Nessuna"
-};
+  deletedAt?: number; // Aggiungi questa riga
+}

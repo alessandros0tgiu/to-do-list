@@ -339,8 +339,10 @@ body {
   align-items: center;
   padding: 0 20px;
   border-radius: 16px;
-  background: #f8fafc; /* Sfondo neutro di base */
-  opacity: 1; /* Ora le icone si vedono bene */
+  background: #f8fafc;
+  /* Sfondo neutro di base */
+  opacity: 1;
+  /* Ora le icone si vedono bene */
   z-index: 1;
 }
 
@@ -523,10 +525,12 @@ button:focus:not(:focus-visible),
 input:focus:not(:focus-visible) {
   outline: none;
 }
+
 button:active {
   transform: scale(0.98);
 }
-.todo-list-container > * {
+
+.todo-list-container>* {
   animation: slideUp 0.3s ease-out forwards;
 }
 
@@ -535,11 +539,13 @@ button:active {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 /* Badge Categorie */
 .badge-category {
   font-size: 0.65rem;
@@ -550,9 +556,20 @@ button:active {
   letter-spacing: 0.02em;
 }
 
-.badge-category.lavoro { background: #e0f2fe; color: #0369a1; }
-.badge-category.personale { background: #f1f5f9; color: #475569; }
-.badge-category.spesa { background: #fef9c3; color: #a16207; }
+.badge-category.lavoro {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.badge-category.personale {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.badge-category.spesa {
+  background: #fef9c3;
+  color: #a16207;
+}
 
 /* Mini filtri categoria */
 .filter-btn-sm {
@@ -568,8 +585,9 @@ button:active {
   background: white;
   border-color: var(--border);
   color: var(--accent);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
 /* --- STILI PER GLI ERRORI --- */
 .error-message {
   background: rgba(239, 68, 68, 0.1);
@@ -583,9 +601,19 @@ button:active {
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 /* --- BADGE DELLE CARTELLE (Sia nella lista che nel manager) --- */
@@ -593,7 +621,8 @@ button:active {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #000 !important; /* Cartelle nere come richiesto */
+  background: #000 !important;
+  /* Cartelle nere come richiesto */
   color: #fff !important;
   padding: 6px 14px;
   border-radius: 20px;
@@ -654,7 +683,19 @@ button:active {
 .filter-bar::-webkit-scrollbar {
   display: none;
 }
+
 .filter-bar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.todo-text:not(.completed):hover {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+}
+
+.todo-text {
+  transition: background 0.2s;
+  padding: 2px 4px;
+  margin-left: -4px;
 }
