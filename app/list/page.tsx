@@ -62,7 +62,7 @@ export default function ListPage() {
             </div>
             <div className="stat-box">
               <span className="stat-number">{progressPercentage}%</span>
-              <span className="stat-label">Goal</span>
+              <span className="stat-label">Completato</span>
             </div>
           </div>
           <div className="progress-bar">
