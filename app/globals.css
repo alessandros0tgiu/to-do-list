@@ -570,3 +570,91 @@ button:active {
   color: var(--accent);
   box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
+/* --- STILI PER GLI ERRORI --- */
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  margin-bottom: 15px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* --- BADGE DELLE CARTELLE (Sia nella lista che nel manager) --- */
+.badge-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #000 !important; /* Cartelle nere come richiesto */
+  color: #fff !important;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.badge-category:hover {
+  transform: translateY(-2px);
+}
+
+.badge-category button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: background 0.2s;
+}
+
+.badge-category button:hover {
+  background: rgba(239, 68, 68, 0.8);
+}
+
+/* --- BOTTONE "VAI ALLA LISTA" E GHOST --- */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  color: #000;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.btn-ghost:hover {
+  background: #000;
+  color: #fff;
+}
+
+/* --- INPUT FIELD FOCUS --- */
+.input-field:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+/* --- SCROLLBAR PER I FILTRI (Mobile friendly) --- */
+.filter-bar::-webkit-scrollbar {
+  display: none;
+}
+.filter-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

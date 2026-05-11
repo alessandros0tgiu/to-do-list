@@ -13,10 +13,13 @@ export default function AddPage() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleAdd = (text: string, dueDate?: string, dueTime?: string, category?: string) => {
+    // Validazione task vuoto
     if (!text || text.trim().length === 0) {
-      setError("Il testo non può essere vuoto");
+      setError("Il testo del task non può essere vuoto");
       return;
     }
+    
+    setError(null);
     const todos = getTodos();
     const parsed = parseInput(text);
 
@@ -26,21 +29,30 @@ export default function AddPage() {
         text: parsed.text, 
         completed: false,
         dueDate: parsed.dueDate || dueDate || undefined,
-        dueTime: dueTime || undefined, // Orario salvato correttamente
+        dueTime: dueTime || undefined,
         category: category || "Nessuna",
       },
       ...todos,
     ]);
-    router.push("/list");
+
+    // RESET LOCALE: Invece di router.push, forziamo il reset del form cambiando la key
+    setRefreshKey(prev => prev + 1);
   };
 
   return (
     <div className="page-wrapper">
       <div className="glass-panel">
-        <Link href="/" className="btn-ghost">← Dashboard</Link>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Link href="/" className="btn-ghost">← Dashboard</Link>
+          {/* Nuovo tasto per andare alla lista */}
+          <Link href="/list" className="btn-ghost" style={{ background: '#f1f5f9' }}>Vai alla Lista →</Link>
+        </div>
+
         <div style={{ marginTop: "24px" }}>
           <h1 className="h1-super">Crea Task</h1>
-          {error && <div className="error-message">{error}</div>}
+          
+          {/* Messaggio di errore per i task */}
+          {error && <div className="error-message" style={{ color: '#ef4444', marginBottom: '10px', fontSize: '0.9rem' }}>{error}</div>}
 
           <TodoForm key={refreshKey} onAdd={handleAdd} />
           
