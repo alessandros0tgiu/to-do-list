@@ -13,22 +13,29 @@ export function TodoForm({
 }) {
   const { register, handleSubmit, reset } = useForm<FormData>();
 
+  const onSubmit = (data: FormData) => {
+    // Passiamo i dati al padre (AddPage) anche se il testo è vuoto
+    onAdd(data.text, data.dueDate);
+    
+    // Resettiamo il campo solo se l'inserimento è andato a buon fine 
+    // (opzionale: potresti voler resettare solo se data.text non è vuoto)
+    if (data.text.trim().length > 0) {
+      reset();
+    }
+  };
+
   return (
     <form
-      onSubmit={handleSubmit((data) => {
-        onAdd(data.text, data.dueDate);
-        reset();
-      })}
+      onSubmit={handleSubmit(onSubmit)}
       style={{ display: "grid", gap: "16px" }}
     >
       <input
-        {...register("text", { required: true })}
+        {...register("text")} // 👈 Rimosso { required: true }
         className="input-field"
         placeholder="Cosa devi fare?"
         autoFocus
       />
 
-      {/* 🗓️ calendario opzionale */}
       <input
         type="date"
         {...register("dueDate")}

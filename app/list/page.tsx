@@ -5,26 +5,22 @@ import { Todo } from "@/types/todo";
 import { getTodos, saveTodos } from "@/lib/storage";
 import Link from "next/link";
 import { isToday, isThisWeek, isOverdue } from "@/lib/date";
-import { TodoItem } from "./TodoItem"; // Importante: deve puntare al file creato prima
+import { TodoItem } from "./TodoItem";
 
-// AGGIUNTO: export default è fondamentale per Next.js
 export default function ListPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<string>("all");
 
-  // Carica i task dal localStorage all'avvio
   useEffect(() => {
     setTodos(getTodos());
   }, []);
 
-  // Gestione eliminazione
   const deleteTodo = (id: string) => {
     const updated = todos.filter((t) => t.id !== id);
     setTodos(updated);
     saveTodos(updated);
   };
 
-  // Gestione completamento
   const toggleTodo = (id: string) => {
     const updated = todos.map((t) =>
       t.id === id ? { ...t, completed: !t.completed } : t
@@ -33,23 +29,51 @@ export default function ListPage() {
     saveTodos(updated);
   };
 
-  // Logica di filtraggio
+  // CALCOLO PROGRESSO (Fondamentale per far funzionare la barra)
+  const completedCount = todos.filter((t) => t.completed).length;
+  const totalCount = todos.length;
+  const progressPercentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
   const filtered = todos.filter((todo) => {
     if (filter === "today") return isToday(todo.dueDate);
     if (filter === "week") return isThisWeek(todo.dueDate);
     if (filter === "overdue") return isOverdue(todo.dueDate) && !todo.completed;
-    return true; // "all"
+    return true;
   });
 
   return (
     <main className="page-wrapper">
       <div className="glass-panel">
-        <header className="top-bar">
-          <Link href="/" className="btn-ghost">← Torna Home</Link>
-          <h1 className="h1-super" style={{ fontSize: '1.5rem', margin: 0 }}>I miei Task</h1>
+        <header className="top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <Link href="/" className="btn-ghost" style={{ width: 'auto', padding: '8px 16px' }}>← Home</Link>
+          <h1 className="h1-super" style={{ fontSize: '1.4rem', margin: 0 }}>I miei Task</h1>
         </header>
 
-        {/* Barra dei Filtri */}
+        {/* 📊 DASHBOARD STATISTICHE */}
+        <div className="stats-card">
+          <div className="stats-row">
+            <div className="stat-box">
+              <span className="stat-number">{totalCount}</span>
+              <span className="stat-label">Tasks</span>
+            </div>
+            <div className="stat-box">
+              <span className="stat-number">{completedCount}</span>
+              <span className="stat-label">Fatti</span>
+            </div>
+            <div className="stat-box">
+              <span className="stat-number">{progressPercentage}%</span>
+              <span className="stat-label">Goal</span>
+            </div>
+          </div>
+          <div className="progress-bar">
+            {/* LARGHEZZA DINAMICA APPLICATA QUI */}
+            <div 
+              className="progress-fill" 
+              style={{ width: `${progressPercentage}%` }}
+            ></div>
+          </div>
+        </div>
+
         <div className="filter-bar">
           {["all", "today", "week", "overdue"].map((f) => (
             <button
@@ -57,12 +81,11 @@ export default function ListPage() {
               className={`filter-btn ${filter === f ? "active" : ""}`}
               onClick={() => setFilter(f)}
             >
-              {f.charAt(0).toUpperCase() + f.slice(1)}
+              {f === "all" ? "Tutti" : f === "today" ? "Oggi" : f === "week" ? "Settimana" : "Scaduti"}
             </button>
           ))}
         </div>
 
-        {/* Lista dei Task con il nuovo componente TodoItem */}
         <div className="todo-list-container">
           {filtered.map((todo) => (
             <TodoItem
@@ -75,7 +98,7 @@ export default function ListPage() {
           ))}
 
           {filtered.length === 0 && (
-            <div className="empty-box">
+            <div className="empty-box" style={{ textAlign: 'center', padding: '40px 0' }}>
               <p className="p-muted">Nessun task trovato ✨</p>
             </div>
           )}
