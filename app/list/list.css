@@ -257,37 +257,69 @@
 
 /* --- AGGIUNTE RESPONSIVE list.css --- */
 @media (max-width: 600px) {
+  .h1-super {
+    font-size: 1.8rem;
+    /* Riduci il titolo per evitare che vada a capo male */
+  }
+
+  /* Fix Barra Progresso */
   .progress-card {
     padding: 16px;
     width: 100%;
     box-sizing: border-box;
   }
 
-  /* Forza la barra di progresso a riprendere la sua forma lineare */
   .progress-bar-bg {
     height: 8px;
-    width: 100% !important;
-    display: block !important;
+    /* Più sottile su mobile */
+    width: 100%;
   }
 
+  /* Fix Card Task */
   .todo-item-card {
-    /* Se il testo è lungo, mettiamo gli elementi uno sotto l'altro */
-    flex-wrap: wrap; 
-    gap: 10px;
+    flex-wrap: wrap;
+    /* Permette al contenuto di andare a capo se lungo */
+    gap: 12px;
+    padding: 14px;
   }
 
   .todo-left {
-    width: 100%; /* Occupa tutto lo spazio per non farsi schiacciare dal cestino */
+    width: 100%;
+    /* Occupa lo spazio superiore */
   }
 
   .delete-btn {
-    margin-left: auto; /* Sposta il cestino a destra */
+    margin-left: auto;
+    /* Allinea il tasto elimina a destra in basso */
   }
 
+  /* Fix Filtri */
   .filter-tabs {
-    /* Permette lo scroll orizzontale dei filtri senza rompere il layout */
-    overflow-x: auto;
-    padding-bottom: 5px;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
     -webkit-overflow-scrolling: touch;
+    /* Scroll fluido su iPhone */
+  }
+}
+
+/* list.css */
+.menu-trigger {
+  display: none;
+  /* Nascosto su desktop */
+}
+
+@media (max-width: 768px) {
+  .menu-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
   }
 }

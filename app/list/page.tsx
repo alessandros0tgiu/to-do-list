@@ -92,8 +92,12 @@ export default function ListPage() {
 
   return (
     <main className={`dashboard-container ${!isSidebarOpen ? "sidebar-closed" : ""}`}>
+
+      {/* Overlay per mobile: chiude la sidebar cliccando fuori */}
+      {isSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>}
+
       {/* --- SIDEBAR --- */}
-      <aside className={`sidebar ${!isSidebarOpen ? "collapsed" : ""}`}>
+      <aside className={`sidebar ${!isSidebarOpen ? "collapsed" : "mobile-open"}`}>
         {/* HEADER SIDEBAR: Logo e Toggle sulla stessa riga */}
         <div style={{
           display: 'flex',
@@ -110,7 +114,11 @@ export default function ListPage() {
             {isSidebarOpen && <h2 className="brand-name" style={{ margin: 0, fontSize: '1.1rem' }}>TaskFlow</h2>}
           </Link>
 
-          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="toggle-sidebar-btn" style={{ margin: 0 }}>
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="toggle-sidebar-btn desktop-only" /* <--- Aggiungi questa classe */
+            style={{ margin: 0 }}
+          >
             {isSidebarOpen ? "«" : "»"}
           </button>
         </div>
@@ -120,13 +128,11 @@ export default function ListPage() {
             {isSidebarOpen ? "Categorie" : "•••"}
           </p>
 
-          {/* Tutte le Categorie */}
           <button className={`nav-item ${catFilter === "all" ? "active" : ""}`} onClick={() => setCatFilter("all")} title="Tutte">
             <span className="nav-icon">📂</span>
             {isSidebarOpen && <span>Tutte</span>}
           </button>
 
-          {/* Mappa Categorie con Icona # sempre visibile */}
           {availableCats.map((c) => (
             <button key={c} className={`nav-item ${catFilter === c ? "active" : ""}`} onClick={() => setCatFilter(c)} title={c}>
               <span className="nav-icon">🏷️</span>
@@ -138,6 +144,11 @@ export default function ListPage() {
 
       {/* --- CONTENUTO PRINCIPALE --- */}
       <section className="main-content">
+
+        {/* PULSANTE MENU MOBILE (Appare solo su smartphone) */}
+        <button className="mobile-menu-btn" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+          {isSidebarOpen ? "✕" : "☰"}
+        </button>
 
         {/* 1. BOTTONE NUOVO PROMEMORIA (Sempre in alto a sinistra) */}
         <div style={{ marginBottom: '32px' }}>
