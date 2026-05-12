@@ -6,6 +6,7 @@ import { getTodos, saveTodos } from "@/lib/storage";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { parseInput } from "@/lib/parse";
+import "./add.css";
 
 export default function AddPage() {
   const router = useRouter();

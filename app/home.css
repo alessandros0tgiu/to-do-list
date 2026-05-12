@@ -1,0 +1,103 @@
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 520px;
+  padding: 40px;
+  border-radius: var(--radius);
+  border: 1px solid white;
+  box-shadow: var(--shadow);
+  background: rgba(255, 255, 255, 0.4); /* Più trasparente */
+  backdrop-filter: blur(20px);          /* Sfocatura profonda */
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6); /* Bordo luminoso */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stat-pill {
+  /* ... (mantieni il resto) ... */
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+.stat-pill:hover {
+  background: white;
+  transform: translateY(-5px) scale(1.02); /* Effetto galleggiamento */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+
+.h1-super {
+  font-size: 2.3rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin-bottom: 8px;
+}
+
+.p-muted { color: var(--text-secondary); font-size: 1rem; text-align: center; }
+
+/* Stats Grid */
+.quick-stats-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 30px 0;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--text-main);
+  transition: all 0.25s ease;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+.stat-pill:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.stat-pill.red strong { color: #ef4444; }
+
+/* Nav Home */
+.cta-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* BOTTONE IDENTICO A DASHBOARD */
+.btn-ghost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #000000 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: none !important;
+}
+
+@media (min-width: 480px) {
+  .cta-container { flex-direction: row; }
+  .btn-black { flex: 2; }
+  .btn-ghost { flex: 1; }
+}

@@ -1,0 +1,269 @@
+/* ===== LAYOUT SPECIFICO LISTA ===== */
+.main-content {
+  padding: 40px 5%;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.h1-super {
+  font-size: 2.3rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin-bottom: 24px;
+}
+
+/* ===== PROGRESS CARD PREMIUM ===== */
+.progress-card {
+  background: white;
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  margin-bottom: 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 12px;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ===== TABS FILTRI ===== */
+.filter-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  overflow-x: auto;
+  white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.filter-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.tab-btn.active {
+  color: var(--accent);
+  position: relative;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* ===== TODO CARD & SWIPE LOGIC ===== */
+.todo-list-container {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+
+.swipe-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.todo-item-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: white;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  animation: slideInUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+.todo-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.todo-item-card.overdue {
+  border-color: #ef4444;
+  background: #fff5f5;
+}
+
+/* Background dello swipe (Icone sotto la card) */
+.swipe-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background: #f8fafc;
+  z-index: 1;
+}
+
+.swipe-action {
+  font-size: 18px;
+}
+
+.swipe-action.left {
+  color: #16a34a;
+}
+
+.swipe-action.right {
+  color: #dc2626;
+}
+
+/* ===== ELEMENTI INTERNI CARD ===== */
+.todo-left {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex: 1;
+}
+
+.custom-checkbox {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #cbd5e1;
+  border-radius: 7px;
+  appearance: none;
+  cursor: pointer;
+  background: white;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.custom-checkbox:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+  background-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.todo-text {
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.todo-text.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.todo-date {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.delete-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: none;
+  background: #fff1f2;
+  color: #e11d48;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background: #ffe4e6;
+  transform: scale(1.1);
+}
+
+/* ===== ANIMAZIONI ===== */
+.removing {
+  transform: translateX(-110%);
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  padding: 0;
+  pointer-events: none;
+  transition: all 0.4s ease;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.removing {
+  animation: slideOutRight 0.5s ease forwards;
+}
+
+@keyframes slideOutRight {
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+    margin-bottom: -60px;
+    /* Fa salire i task sottostanti fluidamente */
+  }
+}
+
+.todo-list-container>* {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+/* ===== MOBILE ADAPTATION ===== */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 24px 16px !important;
+  }
+
+  .h1-super {
+    font-size: 1.8rem;
+  }
+
+  .todo-item-card {
+    padding: 12px;
+  }
+}

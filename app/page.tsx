@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getTodos } from "@/lib/storage";
 import { isToday, isOverdue } from "@/lib/date";
 import { Todo } from "@/types/todo";
+import "./home.css";
 
 export default function HomePage() {
   const [todos, setTodos] = useState<Todo[]>([]);

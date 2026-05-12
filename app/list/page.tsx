@@ -5,6 +5,7 @@ import { getTodos, saveTodos, getCategories } from "@/lib/storage";
 import Link from "next/link";
 import { isToday, isThisWeek, isOverdue } from "@/lib/date";
 import { TodoItem } from "@/components/TodoItem";
+import "./list.css";
 
 export default function ListPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
