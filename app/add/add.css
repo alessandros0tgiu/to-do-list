@@ -88,3 +88,22 @@
     transform: translateY(0);
   }
 }
+
+/* --- AGGIUNTE PER RESPONSIVE IN add.css --- */
+
+@media (max-width: 600px) {
+  .form-container {
+    margin: 10px;
+    padding: 20px;
+    width: auto; /* Evita che esca dai bordi */
+  }
+
+  .input-field {
+    padding: 14px;
+    font-size: 16px; /* Evita lo zoom automatico su iOS */
+  }
+
+  .btn-black {
+    width: 100%;
+  }
+}

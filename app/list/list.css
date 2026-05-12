@@ -253,17 +253,41 @@
   animation: slideUp 0.3s ease-out forwards;
 }
 
-/* ===== MOBILE ADAPTATION ===== */
-@media (max-width: 768px) {
-  .main-content {
-    padding: 24px 16px !important;
+/* --- AGGIUNTE PER RESPONSIVE IN list.css --- */
+
+/* --- AGGIUNTE RESPONSIVE list.css --- */
+@media (max-width: 600px) {
+  .progress-card {
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
-  .h1-super {
-    font-size: 1.8rem;
+  /* Forza la barra di progresso a riprendere la sua forma lineare */
+  .progress-bar-bg {
+    height: 8px;
+    width: 100% !important;
+    display: block !important;
   }
 
   .todo-item-card {
-    padding: 12px;
+    /* Se il testo è lungo, mettiamo gli elementi uno sotto l'altro */
+    flex-wrap: wrap; 
+    gap: 10px;
+  }
+
+  .todo-left {
+    width: 100%; /* Occupa tutto lo spazio per non farsi schiacciare dal cestino */
+  }
+
+  .delete-btn {
+    margin-left: auto; /* Sposta il cestino a destra */
+  }
+
+  .filter-tabs {
+    /* Permette lo scroll orizzontale dei filtri senza rompere il layout */
+    overflow-x: auto;
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
   }
 }

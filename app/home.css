@@ -101,3 +101,34 @@
   .btn-black { flex: 2; }
   .btn-ghost { flex: 1; }
 }
+
+/* --- AGGIUNTE PER RESPONSIVE IN home.css --- */
+
+/* --- AGGIUNTE RESPONSIVE home.css --- */
+@media (max-width: 480px) {
+  .glass-panel {
+    padding: 24px 16px !important;
+    margin: 10px;
+    max-width: 100%;
+  }
+
+  .h1-super {
+    font-size: 1.8rem !important;
+    text-align: center;
+  }
+
+  .quick-stats-container {
+    grid-template-columns: 1fr !important; /* Stats in colonna singola */
+    width: 100%;
+  }
+
+  .cta-container {
+    flex-direction: column !important;
+    width: 100%;
+  }
+
+  .btn-black, .btn-ghost {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+}
