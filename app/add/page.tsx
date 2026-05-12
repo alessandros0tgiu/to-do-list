@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TodoForm } from "@/components/todo-form";
 import { CategoryManager } from "@/components/CategoryManager";
 import { getTodos, saveTodos } from "@/lib/storage";
@@ -9,12 +9,16 @@ import { parseInput } from "@/lib/parse";
 import "./add.css";
 
 export default function AddPage() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Assicura che il CSS e il layout siano pronti prima di renderizzare componenti complessi
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleAdd = (text: string, dueDate?: string, dueTime?: string, category?: string) => {
-    // Validazione task vuoto
     if (!text || text.trim().length === 0) {
       setError("Il testo del task non può essere vuoto");
       return;
@@ -36,30 +40,31 @@ export default function AddPage() {
       ...todos,
     ]);
 
-    // RESET LOCALE: Invece di router.push, forziamo il reset del form cambiando la key
     setRefreshKey(prev => prev + 1);
   };
 
-  return (
-    <div className="page-wrapper">
-      <div className="glass-panel">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Link href="/" className="btn-ghost">← Dashboard</Link>
-          {/* Nuovo tasto per andare alla lista */}
-          <Link href="/list" className="btn-ghost" style={{ background: '#f1f5f9' }}>Vai alla Lista →</Link>
-        </div>
+  if (!isMounted) return null; // Previene il flash di contenuto senza CSS
 
-        <div style={{ marginTop: "24px" }}>
+  return (
+    <main className="page-wrapper add-page-container">
+      <div className="glass-panel form-container">
+        <header className="form-header">
+          <Link href="/" className="btn-ghost">← Dashboard</Link>
+          <Link href="/list" className="btn-ghost secondary">Vai alla Lista →</Link>
+        </header>
+
+        <div className="form-content">
           <h1 className="h1-super">Crea Task</h1>
           
-          {/* Messaggio di errore per i task */}
-          {error && <div className="error-message" style={{ color: '#ef4444', marginBottom: '10px', fontSize: '0.9rem' }}>{error}</div>}
+          {error && <div className="error-message">{error}</div>}
 
-          <TodoForm key={refreshKey} onAdd={handleAdd} />
-          
-          <CategoryManager onCategoryChange={() => setRefreshKey(prev => prev + 1)} />
+          <div key={refreshKey} className="fade-in">
+            <TodoForm onAdd={handleAdd} />
+            <div className="separator">oppure gestisci</div>
+            <CategoryManager />
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

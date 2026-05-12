@@ -1,17 +1,30 @@
+.add-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 /* EFFETTO VETRO SUL FORM CONTAINER */
 .form-container {
   max-width: 600px;
-  margin: 40px auto;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.4);
-  /* Trasparente per effetto vetro */
+  width: 100%;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.4) !important;
   backdrop-filter: blur(20px);
-  /* Sfocatura vetro */
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
 }
 
 .input-field {
@@ -95,15 +108,73 @@
   .form-container {
     margin: 10px;
     padding: 20px;
-    width: auto; /* Evita che esca dai bordi */
+    width: auto;
+    /* Evita che esca dai bordi */
   }
 
   .input-field {
     padding: 14px;
-    font-size: 16px; /* Evita lo zoom automatico su iOS */
+    font-size: 16px;
+    /* Evita lo zoom automatico su iOS */
   }
 
   .btn-black {
     width: 100%;
+  }
+}
+
+.btn-ghost {
+  padding: 8px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.btn-ghost.secondary {
+  background: #f1f5f9;
+}
+
+.btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.separator {
+  text-align: center;
+  margin: 30px 0;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fix per Mobile */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 24px;
+    margin: 10px;
+  }
+
+  .h1-super {
+    font-size: 1.8rem;
   }
 }
