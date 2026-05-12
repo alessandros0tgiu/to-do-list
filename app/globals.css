@@ -17,10 +17,10 @@ body {
   color: var(--text-main);
   font-family: 'Plus Jakarta Sans', sans-serif;
   margin: 0;
-  display: flex;
-  justify-content: center;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  display: block;
+  /* Rimuovi il justify-content: center */
 }
 
 /* ===== LAYOUT ===== */
@@ -277,16 +277,16 @@ body {
 }
 
 .stat-number {
-  display: block;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 800;
-  color: var(--text-main);
-  /* Forza il nero */
+  display: block;
+  line-height: 1;
 }
 
 .stat-label {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .progress-bar {
@@ -444,18 +444,14 @@ body {
 .btn-black {
   background: var(--accent);
   color: white;
-  padding: 16px 24px;
-  border-radius: 16px;
+  padding: 16px 32px;
+  /* Aumentato padding laterale */
+  border-radius: 14px;
   font-weight: 700;
-  border: none;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.25s ease;
-  display: flex;
-  align-items: center;
+  min-width: 220px;
+  /* Larghezza minima garantita */
   justify-content: center;
-  gap: 8px;
+  transition: all 0.25s ease;
 }
 
 .btn-black:hover {
@@ -708,4 +704,433 @@ button:active {
   transition: background 0.2s;
   padding: 2px 4px;
   margin-left: -4px;
+}
+
+/* Struttura Dashboard */
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+  transition: grid-template-columns 0.3s ease;
+  background-color: var(--app-bg);
+}
+
+.dashboard-container.sidebar-closed {
+  grid-template-columns: 75px 1fr;
+}
+
+.sidebar {
+  background: white;
+  border-right: 1px solid var(--border);
+  padding: 24px 15px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+  padding: 24px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar.collapsed .nav-item {
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.sidebar.collapsed .nav-icon {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.sidebar.collapsed .nav-label {
+  text-align: center;
+  padding: 0;
+}
+
+.toggle-sidebar-btn {
+  background: #f1f5f9;
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #64748b;
+}
+
+.sidebar-nav {
+  margin-top: 24px;
+  /* Ridotto da 40px/50px per sollevare il contenuto */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.main-content {
+  padding: 40px 5%;
+  /* Ridotto il padding fisso per evitare l'effetto "schiacciato" */
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Griglia Statistiche Chiara */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  /* Ridotto per compattezza */
+  margin-bottom: 32px;
+}
+
+.stat-card-new {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  padding: 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s;
+}
+
+.stat-card-new:hover {
+  transform: translateY(-4px);
+}
+
+.stat-icon-bg {
+  width: 44px;
+  height: 44px;
+  background: var(--accent-soft);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  color: var(--accent);
+  position: relative;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* Stili extra per i bottoni della sidebar */
+.filter-bar-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.filter-btn-side {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn-side:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.filter-btn-side.active {
+  background: white;
+  border-color: var(--border);
+  color: var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.btn-add-sidebar {
+  margin-top: 24px;
+  background: var(--accent);
+  color: white;
+  text-align: center;
+  padding: 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  display: block;
+}
+
+.sidebar-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 20px;
+  padding-left: 12px;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+
+.brand-icon {
+  font-size: 1.5rem;
+  background: #f1f5f9;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.brand-name,
+.nav-item {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+.brand-tagline {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Navigazione */
+.nav-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  padding-left: 12px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 4px;
+}
+
+.nav-item:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.nav-item.active {
+  background: #000000;
+  color: #ffffff;
+}
+
+.nav-icon {
+  opacity: 0.7;
+}
+
+/* Bottone Aggiungi in basso */
+.sidebar-footer {
+  margin-top: 30px;
+  /* Rimosso 'auto' per non spingere il tasto sul fondo */
+  padding-top: 10px;
+}
+
+.btn-add-task {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #000000;
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.2s;
+}
+
+.btn-add-task:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+.progress-bar-bg {
+  width: 100%;
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #000;
+  border-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.progress-card {
+  background: white;
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+}
+
+/* Media Query per Mobile */
+@media (max-width: 768px) {
+  .dashboard-container {
+    grid-template-columns: 70px 1fr !important;
+  }
+
+  .main-content {
+    padding: 24px 16px !important;
+    /* Molto meno spazio vuoto ai lati */
+  }
+
+  .btn-black {
+    width: 100% !important;
+    /* Occupa tutto lo spazio su mobile */
+    max-width: none;
+  }
+
+  .sidebar.collapsed .toggle-sidebar-btn {
+    display: flex;
+    /* Assicuriamoci che si veda sempre */
+  }
+
+
+  .h1-super {
+    font-size: 1.7rem !important;
+  }
+
+  .filter-tabs {
+    display: flex;
+    overflow-x: auto;
+    /* Permette lo scroll dei filtri se sono tanti */
+    white-space: nowrap;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.tab-btn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* Bottone nuovo task a tutta larghezza su mobile */
+.btn-black {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+
+/* Fix per il contenitore dei task che vedi tagliato */
+.todo-list-container {
+  width: 100%;
+  overflow: hidden;
+  /* Evita scroll orizzontale fastidioso */
+}
+
+.todo-item-card {
+  padding: 12px;
+  /* Più compatto su mobile */
+}
+
+.main-content {
+  padding: 30px 20px !important;
+  /* Riduciamo i margini laterali generosi */
+}
+
+.h1-super {
+  font-size: 1.8rem;
+  /* Titolo leggermente più piccolo per il mobile */
+}
+
+.sidebar {
+  padding: 15px 10px !important;
+}
+
+/* Nascondiamo elementi testuali nella sidebar mobile se collassata */
+.sidebar.collapsed .brand-name,
+.sidebar.collapsed .nav-label,
+.sidebar.collapsed .nav-item span:not(.nav-icon) {
+  display: none;
+}
+
+
+/* Ottimizzazione per il bottone Nuovo Task su mobile */
+@media (max-width: 480px) {
+  .btn-black {
+    width: 100%;
+    /* Il bottone prende tutta la larghezza su telefoni piccoli */
+    padding: 12px 16px;
+  }
+
+  .filter-tabs {
+    overflow-x: auto;
+    /* Permette lo scroll orizzontale dei filtri se sono troppi */
+    white-space: nowrap;
+    padding-bottom: 8px;
+  }
+}
+
+.sidebar-brand {
+  margin-bottom: 0 !important;
+  /* Rimuoviamo il margine vecchio */
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
