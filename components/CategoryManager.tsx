@@ -60,7 +60,7 @@ export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
         📁 Cartelle disponibili
       </h3>
       
-      {catError && <div className="error-message">⚠️ {catError}</div>}
+      {catError && <div className="error-message"> {catError}</div>}
 
       <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }}>
         <input 

@@ -323,3 +323,44 @@
     cursor: pointer;
   }
 }
+
+/* Tasto elimina piccolo per le categorie nella sidebar */
+.btn-delete-small {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.btn-delete-small:hover {
+  color: #ef4444;
+  transform: scale(1.2);
+}
+
+/* Miglioramento tasto elimina Task */
+.delete-btn {
+  background: #fff1f1;
+  color: #ef4444;
+  border: 1px solid #fee2e2;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.delete-btn:hover {
+  background: #ef4444;
+  color: white;
+  transform: rotate(90deg);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}

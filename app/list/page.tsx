@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Todo } from "@/types/todo";
-import { getTodos, saveTodos, getCategories } from "@/lib/storage";
+import { getTodos, saveTodos, getCategories, saveCategories } from "@/lib/storage";
 import Link from "next/link";
 import { isToday, isThisWeek, isOverdue } from "@/lib/date";
 import { TodoItem } from "@/components/TodoItem";
@@ -26,14 +26,12 @@ export default function ListPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // SISTEMATO: Gestione eliminazione e distruzione definitiva
+  // Gestione eliminazione task (Cestino / Definitiva)
   const deleteTodo = (id: string) => {
     const updated = todos.map((t) => {
       if (t.id === id) {
-        // Se è già nel cestino, lo eliminiamo definitivamente
-        if (t.deletedAt) return null;
-        // Altrimenti lo spostiamo nel cestino
-        return { ...t, deletedAt: Date.now() };
+        if (t.deletedAt) return null; // Elimina definitivamente
+        return { ...t, deletedAt: Date.now() }; // Sposta nel cestino
       }
       return t;
     }).filter((t): t is Todo => t !== null);
@@ -42,15 +40,36 @@ export default function ListPage() {
     saveTodos(updated);
   };
 
-  // SISTEMATO: Recupero dal cestino intelligente
+  // ELIMINAZIONE CARTELLA PROFESSIONALE
+  const removeCategory = (cat: string) => {
+    const confirmText = 
+      `⚠️ AZIONE IRREVERSIBILE\n\n` +
+      `Stai eliminando la cartella: ${cat.toUpperCase()}\n\n` +
+      `Tutti i task associati verranno cancellati permanentemente.\n` +
+      `Vuoi continuare?`;
+
+    if (window.confirm(confirmText)) {
+      // 1. Rimuovi la categoria dal database
+      const allCats = getCategories();
+      const updatedCats = allCats.filter(c => c !== cat);
+      saveCategories(updatedCats);
+      setAvailableCats(updatedCats);
+
+      // 2. Rimuovi tutti i task legati a quella categoria
+      const allTodos = getTodos();
+      const remainingTodos = allTodos.filter(todo => todo.category !== cat);
+      saveTodos(remainingTodos);
+      setTodos(remainingTodos);
+
+      // Se eravamo dentro quella categoria, torniamo a "Tutte"
+      if (catFilter === cat) setCatFilter("all");
+    }
+  };
+
   const toggleTodo = (id: string) => {
     const updated = todos.map((t) => {
       if (t.id === id) {
-        if (t.deletedAt) {
-          // Se lo recuperi dal cestino, torna NON completato e ATTIVO
-          return { ...t, completed: false, deletedAt: undefined };
-        }
-        // Comportamento normale fuori dal cestino
+        if (t.deletedAt) return { ...t, completed: false, deletedAt: undefined };
         return { ...t, completed: !t.completed };
       }
       return t;
@@ -59,7 +78,6 @@ export default function ListPage() {
     saveTodos(updated);
   };
 
-  // SISTEMATO: Modifica testo senza perdere lo stato del cestino
   const updateTodoText = (id: string, newText: string, newCategory?: string) => {
     const updated = todos.map((t) =>
       t.id === id ? { ...t, text: newText, category: newCategory || t.category } : t
@@ -94,14 +112,13 @@ export default function ListPage() {
 
   return (
     <main className={`dashboard-container ${!isSidebarOpen ? "sidebar-closed" : ""}`}>
-      {/* Overlay per mobile */}
       <div className={`sidebar-overlay ${isSidebarOpen ? "visible" : ""}`} onClick={() => setIsSidebarOpen(false)}></div>
 
       <aside className={`sidebar ${!isSidebarOpen ? "collapsed" : "mobile-open"}`}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: isSidebarOpen ? 'space-between' : 'center', width: '100%', marginBottom: '40px', gap: '10px' }}>
-          <Link href="/" className="sidebar-brand" style={{ margin: 0, padding: 0 }}>
+          <Link href="/" className="sidebar-brand">
             <div className="brand-icon"><img src="/favicon.ico" alt="L" style={{ width: '24px', height: '24px' }} /></div>
-            {isSidebarOpen && <h2 className="brand-name" style={{ margin: 0, fontSize: '1.1rem' }}>TaskFlow</h2>}
+            {isSidebarOpen && <h2 className="brand-name">TaskFlow</h2>}
           </Link>
           <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="toggle-sidebar-btn desktop-only">
             {isSidebarOpen ? "«" : "»"}
@@ -109,16 +126,35 @@ export default function ListPage() {
         </div>
 
         <nav className="sidebar-nav">
-          <p className="nav-label" style={{ textAlign: isSidebarOpen ? 'left' : 'center' }}>{isSidebarOpen ? "Categorie" : "•••"}</p>
+          <p className="nav-label">{isSidebarOpen ? "Categorie" : "•••"}</p>
+          
           <button className={`nav-item ${catFilter === "all" ? "active" : ""}`} onClick={() => setCatFilter("all")}>
             <span className="nav-icon">📂</span>
-            {isSidebarOpen && <span>Tutte</span>}
+            {isSidebarOpen && <span>Tutte le cartelle</span>}
           </button>
+
           {availableCats.map((c) => (
-            <button key={c} className={`nav-item ${catFilter === c ? "active" : ""}`} onClick={() => setCatFilter(c)}>
-              <span className="nav-icon">🏷️</span>
-              {isSidebarOpen && <span>{c.toLowerCase()}</span>}
-            </button>
+            <div key={c} className="nav-item-container" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button 
+                className={`nav-item ${catFilter === c ? "active" : ""}`} 
+                onClick={() => setCatFilter(c)}
+                style={{ flex: 1 }}
+              >
+                <span className="nav-icon">🏷️</span>
+                {isSidebarOpen && <span>{c}</span>}
+              </button>
+              
+              {/* Tasto elimina cartella */}
+              {isSidebarOpen && (
+                <button 
+                  onClick={(e) => { e.stopPropagation(); removeCategory(c); }} 
+                  className="btn-delete-small"
+                  title="Elimina cartella"
+                >
+                  ×
+                </button>
+              )}
+            </div>
           ))}
         </nav>
       </aside>
@@ -129,8 +165,8 @@ export default function ListPage() {
         </button>
 
         <div style={{ marginBottom: '32px' }}>
-          <Link href="/add" className="btn-black" style={{ padding: '12px 24px', borderRadius: '12px', width: 'fit-content', display: 'flex' }}>
-            <span>+</span> Nuovo Promemoria
+          <Link href="/add" className="btn-black" style={{ padding: '12px 24px', borderRadius: '12px', width: 'fit-content', display: 'flex', gap: '10px', textDecoration: 'none' }}>
+            <span style={{ fontSize: '1.2rem' }}>+</span> Nuovo Promemoria
           </Link>
         </div>
 
@@ -141,7 +177,7 @@ export default function ListPage() {
 
         <div className="progress-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', fontWeight: 700 }}>
-            <span>Progresso</span>
+            <span>Progresso Totale</span>
             <span>{progressPercentage}%</span>
           </div>
           <div className="progress-bar-bg">
@@ -174,7 +210,7 @@ export default function ListPage() {
               />
             ))
           ) : (
-            <div className="empty-box"><p className="p-muted">Nessun task trovato.</p></div>
+            <div className="empty-box"><p className="p-muted">Nessun task trovato in questa sezione.</p></div>
           )}
         </div>
       </section>
