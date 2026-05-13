@@ -39,26 +39,46 @@
 }
 
 .error-message {
-  background: #fef2f2;
-  color: #dc2626;
-  padding: 12px 16px;
-  border-radius: 12px;
-  border: 1px solid #fee2e2;
+  background: #fff5f5;
+  color: #e53e3e;
+  padding: 14px 20px;
+  border-radius: 16px;
+  border: 1px solid #feb2b2;
   font-weight: 600;
-  margin-bottom: 20px;
-  animation: shake 0.4s ease-in-out;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.08);
+  
+  /* Animazione doppia: entrata dall'alto + scuotimento */
+  animation: errorShow 0.4s ease-out, shake 0.4s ease-in-out;
+}
+
+/* Icona ⚠️ aggiunta automaticamente tramite CSS */
+.error-message::before {
+  content: "⚠️";
+  font-size: 1.1rem;
 }
 
 @keyframes shake {
-  25% {
-    transform: translateX(-5px);
-  }
-
-  75% {
-    transform: translateX(5px);
-  }
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-6px); }
 }
 
+@keyframes errorShow {
+  from { 
+    opacity: 0; 
+    transform: translateY(-10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
 /* BOTTONE NERO CON ANIMAZIONE (Aggiunto) */
 .btn-black {
   background: var(--accent);
@@ -208,4 +228,64 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* BADGE CARTELLA PROFESSIONALE */
+.badge-category {
+  background: #000000;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.badge-category:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* TASTO ELIMINA (DENTRO IL BADGE) */
+.btn-delete-cat {
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.btn-delete-cat:hover {
+  background: #ff4d4d;
+  color: white;
+  transform: rotate(90deg);
+}
+
+/* STILE PER L'ERRORE (GIÀ OTTIMIZZATO) */
+.error-message {
+  background: #fff5f5;
+  color: #e53e3e;
+  padding: 14px 20px;
+  border-radius: 16px;
+  border: 1px solid #feb2b2;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: errorShow 0.4s ease-out, shake 0.4s ease-in-out;
 }

@@ -16,9 +16,8 @@ export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
   }, []);
 
   const addCategory = () => {
-    // Validazione nome cartella vuoto
     if (!newCat || newCat.trim().length === 0) {
-      setCatError("Il nome della cartella non può essere vuoto");
+      setCatError("Inserisci un nome per la cartella");
       return;
     }
 
@@ -35,7 +34,14 @@ export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
   };
 
   const removeCategory = (cat: string) => {
-    if (confirm(`Attenzione: eliminando la cartella "${cat}" cancellerai anche tutti i task contenuti al suo interno.`)) {
+    // Messaggio formattato in modo professionale nell'alert di sistema
+    const confirmText = 
+      `⚠️ AZIONE IRREVERSIBILE\n\n` +
+      `Stai eliminando la cartella: ${cat.toUpperCase()}\n\n` +
+      `Tutti i task associati verranno cancellati permanentemente.\n` +
+      `Vuoi continuare?`;
+
+    if (window.confirm(confirmText)) {
       const updatedCats = categories.filter(c => c !== cat);
       setCategories(updatedCats);
       saveCategories(updatedCats);
@@ -49,30 +55,38 @@ export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
   };
 
   return (
-    <div style={{ marginTop: '30px', padding: '20px', background: 'rgba(255,255,255,0.5)', borderRadius: '16px', border: '1px solid rgba(0,0,0,0.05)' }}>
-      <h3 style={{ fontSize: '1rem', marginBottom: '15px' }}>📁 Gestione Cartelle</h3>
+    <div className="category-manager-card" style={{ marginTop: '30px', padding: '24px', background: 'white', borderRadius: '20px', border: '1px solid #e2e8f0' }}>
+      <h3 style={{ fontSize: '0.9rem', marginBottom: '20px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        📁 Cartelle disponibili
+      </h3>
       
-      {/* Messaggio di errore per le cartelle */}
-      {catError && <div className="error-message" style={{ color: '#ef4444', marginBottom: '10px', fontSize: '0.8rem' }}>{catError}</div>}
+      {catError && <div className="error-message">⚠️ {catError}</div>}
 
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '15px' }}>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }}>
         <input 
           value={newCat} 
           onChange={(e) => {
             setNewCat(e.target.value);
             if(catError) setCatError(null);
           }}
-          placeholder="Nome nuova cartella..."
+          placeholder="Aggiungi categoria..."
           className="input-field"
         />
-        <button type="button" onClick={addCategory} className="btn-black" style={{ width: '60px' }}>+</button>
+        <button type="button" onClick={addCategory} className="btn-black" style={{ width: '60px', borderRadius: '14px', fontSize: '1.2rem' }}>+</button>
       </div>
       
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
         {categories.map(cat => (
-          <div key={cat} className="badge-category" style={{ background: '#000', color: '#fff', padding: '6px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div key={cat} className="badge-category">
             {cat}
-            <button type="button" onClick={() => removeCategory(cat)} style={{ border: 'none', background: 'none', color: '#ff4444', cursor: 'pointer', fontWeight: 'bold' }}>×</button>
+            <button 
+              type="button" 
+              onClick={() => removeCategory(cat)} 
+              className="btn-delete-cat"
+              title="Elimina"
+            >
+              ×
+            </button>
           </div>
         ))}
       </div>
