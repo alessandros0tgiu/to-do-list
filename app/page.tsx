@@ -22,13 +22,28 @@ export default function HomePage() {
       <div className="glass-panel">
         
         <header style={{ textAlign: 'center' }}>
-          <h1 className="h1-super">To-Do-List</h1>
+          {/* Logo e Titolo affiancati */}
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            gap: '12px', 
+            marginBottom: '8px' 
+          }}>
+            <img 
+              src="/favicon.ico" 
+              alt="Logo" 
+              style={{ width: '40px', height: '40px', objectFit: 'contain' }} 
+            />
+            <h1 className="h1-super" style={{ margin: 0 }}>TaskFlow</h1>
+          </div>
+
           <p className="p-muted">
             Gestisci i tuoi impegni quotidiani <br /> 
             con un'interfaccia pulita e veloce.
           </p>
 
-          {/* 📊 QUICK STATS PILLS - Ora in Grid */}
+          {/* 📊 QUICK STATS PILLS */}
           <div className="quick-stats-container">
             <Link href="/list?filter=today" className="stat-pill">
               <span>📅 Oggi</span>
@@ -48,12 +63,12 @@ export default function HomePage() {
             <span>+</span> Nuovo Promemoria
           </Link>
           
-          <Link href="/list" className="btn-ghost">
+          <Link href="/list" className="btn-black">
             Vai alla Lista
           </Link>
         </nav>
 
-        {/* Footer discreto opzionale */}
+        {/* Footer discreto */}
         <footer style={{ marginTop: '40px', textAlign: 'center', opacity: 0.4, fontSize: '0.8rem' }}>
           Totale task salvati: {todos.length}
         </footer>
