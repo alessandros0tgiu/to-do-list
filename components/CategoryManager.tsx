@@ -21,9 +21,16 @@ export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
       return;
     }
 
-    if (!categories.includes(newCat.trim())) {
+    const trimmed = newCat.trim();
+
+    // AGGIUNTO: Controllo che ignora maiuscole/minuscole
+    const exists = categories.some(
+      (cat) => cat.toLowerCase() === trimmed.toLowerCase()
+    );
+
+    if (!exists) {
       setCatError(null);
-      const updated = [...categories, newCat.trim()];
+      const updated = [...categories, trimmed];
       setCategories(updated);
       saveCategories(updated);
       setNewCat("");
@@ -34,7 +41,6 @@ export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
   };
 
   const removeCategory = (cat: string) => {
-    // Messaggio formattato in modo professionale nell'alert di sistema
     const confirmText = 
       `⚠️ AZIONE IRREVERSIBILE\n\n` +
       `Stai eliminando la cartella: ${cat.toUpperCase()}\n\n` +
@@ -57,7 +63,7 @@ export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
   return (
     <div className="category-manager-card" style={{ marginTop: '30px', padding: '24px', background: 'white', borderRadius: '20px', border: '1px solid #e2e8f0' }}>
       <h3 style={{ fontSize: '0.9rem', marginBottom: '20px', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-        📁 Cartelle disponibili
+        📁 Crea Cartelle
       </h3>
       
       {catError && <div className="error-message"> {catError}</div>}
@@ -79,14 +85,7 @@ export function CategoryManager({ onCategoryChange }: CategoryManagerProps) {
         {categories.map(cat => (
           <div key={cat} className="badge-category">
             {cat}
-            <button 
-              type="button" 
-              onClick={() => removeCategory(cat)} 
-              className="btn-delete-cat"
-              title="Elimina"
-            >
-              ×
-            </button>
+            <button onClick={() => removeCategory(cat)} className="btn-delete-cat">×</button>
           </div>
         ))}
       </div>

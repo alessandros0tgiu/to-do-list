@@ -26,42 +26,50 @@ export default function ListPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Gestione eliminazione task (Cestino / Definitiva)
+  // ELIMINAZIONE TASK (Cestino / Definitiva)
   const deleteTodo = (id: string) => {
-    const updated = todos.map((t) => {
-      if (t.id === id) {
-        if (t.deletedAt) return null; // Elimina definitivamente
-        return { ...t, deletedAt: Date.now() }; // Sposta nel cestino
-      }
-      return t;
-    }).filter((t): t is Todo => t !== null);
+    const todoTarget = todos.find(t => t.id === id);
+    if (!todoTarget) return;
 
-    setTodos(updated);
-    saveTodos(updated);
+    if (todoTarget.deletedAt) {
+      if (window.confirm("Eliminare definitivamente questo task?")) {
+        const updated = todos.filter(t => t.id !== id);
+        setTodos(updated);
+        saveTodos(updated);
+      }
+    } else {
+      const updated = todos.map(t => 
+        t.id === id ? { ...t, deletedAt: Date.now() } : t
+      );
+      setTodos(updated);
+      saveTodos(updated);
+    }
   };
 
-  // ELIMINAZIONE CARTELLA PROFESSIONALE
+  // MODIFICATO: ELIMINAZIONE CARTELLA "SICURA" (Sposta i task nel cestino)
   const removeCategory = (cat: string) => {
-    const confirmText = 
-      `⚠️ AZIONE IRREVERSIBILE\n\n` +
-      `Stai eliminando la cartella: ${cat.toUpperCase()}\n\n` +
-      `Tutti i task associati verranno cancellati permanentemente.\n` +
-      `Vuoi continuare?`;
+    const confirmText =
+      `Spostare nel cestino la cartella: ${cat.toUpperCase()}?\n\n` +
+      `Tutti i task contenuti finiranno nel cestino e potrai recuperarli da lì.\n` +
+      `La cartella verrà rimossa dall'elenco a sinistra.`;
 
     if (window.confirm(confirmText)) {
-      // 1. Rimuovi la categoria dal database
-      const allCats = getCategories();
-      const updatedCats = allCats.filter(c => c !== cat);
-      saveCategories(updatedCats);
+      // 1. Rimuoviamo la categoria dall'elenco laterale
+      const updatedCats = availableCats.filter(c => c !== cat);
       setAvailableCats(updatedCats);
+      saveCategories(updatedCats);
 
-      // 2. Rimuovi tutti i task legati a quella categoria
-      const allTodos = getTodos();
-      const remainingTodos = allTodos.filter(todo => todo.category !== cat);
-      saveTodos(remainingTodos);
-      setTodos(remainingTodos);
+      // 2. IMPORTANTE: Invece di cancellare i task, li spostiamo nel cestino
+      const updatedTodos = todos.map(todo => {
+        if (todo.category === cat) {
+          return { ...todo, deletedAt: Date.now() }; // Segna come eliminato
+        }
+        return todo;
+      });
 
-      // Se eravamo dentro quella categoria, torniamo a "Tutte"
+      setTodos(updatedTodos);
+      saveTodos(updatedTodos);
+
       if (catFilter === cat) setCatFilter("all");
     }
   };
@@ -126,33 +134,21 @@ export default function ListPage() {
         </div>
 
         <nav className="sidebar-nav">
-          <p className="nav-label">{isSidebarOpen ? "Categorie" : "•••"}</p>
-          
           <button className={`nav-item ${catFilter === "all" ? "active" : ""}`} onClick={() => setCatFilter("all")}>
             <span className="nav-icon">📂</span>
             {isSidebarOpen && <span>Tutte le cartelle</span>}
           </button>
 
+          <p className="nav-label">{isSidebarOpen ? "Categorie" : "•••"}</p>
+
           {availableCats.map((c) => (
             <div key={c} className="nav-item-container" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <button 
-                className={`nav-item ${catFilter === c ? "active" : ""}`} 
-                onClick={() => setCatFilter(c)}
-                style={{ flex: 1 }}
-              >
+              <button className={`nav-item ${catFilter === c ? "active" : ""}`} onClick={() => setCatFilter(c)} style={{ flex: 1 }}>
                 <span className="nav-icon">🏷️</span>
                 {isSidebarOpen && <span>{c}</span>}
               </button>
-              
-              {/* Tasto elimina cartella */}
               {isSidebarOpen && (
-                <button 
-                  onClick={(e) => { e.stopPropagation(); removeCategory(c); }} 
-                  className="btn-delete-small"
-                  title="Elimina cartella"
-                >
-                  ×
-                </button>
+                <button onClick={(e) => { e.stopPropagation(); removeCategory(c); }} className="btn-delete-small">×</button>
               )}
             </div>
           ))}
@@ -210,7 +206,7 @@ export default function ListPage() {
               />
             ))
           ) : (
-            <div className="empty-box"><p className="p-muted">Nessun task trovato in questa sezione.</p></div>
+            <div className="empty-box"><p className="p-muted">Nessun task trovato.</p></div>
           )}
         </div>
       </section>

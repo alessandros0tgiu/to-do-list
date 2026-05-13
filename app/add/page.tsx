@@ -12,8 +12,6 @@ export default function AddPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
 
-  // Questo useEffect assicura che la pagina venga renderizzata 
-  // solo quando il client è pronto, evitando il cambio colori al refresh
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -40,12 +38,9 @@ export default function AddPage() {
       ...todos,
     ]);
 
-    // Reset del form senza ricaricare la pagina
     setRefreshKey(prev => prev + 1);
   };
 
-  // Se la pagina sta ancora caricando "lato server", non mostriamo nulla
-  // per evitare il glitch dei colori
   if (!isMounted) return null;
 
   return (
@@ -61,10 +56,12 @@ export default function AddPage() {
 
           {error && <div className="error-message">{error}</div>}
 
+          {/* Passiamo il refreshTrigger al form */}
           <div key={refreshKey} className="fade-in">
-            <TodoForm onAdd={handleAdd} />
-            <div className="separator">Oppure gestisci</div>
-            <CategoryManager />
+            <TodoForm onAdd={handleAdd} refreshTrigger={refreshKey} />
+            <div className="separator">Oppure</div>
+            {/* Aggiorniamo la key quando una categoria viene aggiunta o rimossa */}
+            <CategoryManager onCategoryChange={() => setRefreshKey(prev => prev + 1)} />
           </div>
         </div>
       </div>
