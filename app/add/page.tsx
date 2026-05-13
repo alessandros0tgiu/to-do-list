@@ -49,7 +49,7 @@ export default function AddPage() {
   if (!isMounted) return null;
 
   return (
-    <main className="add-page-wrapper">
+    <main className="add-page-container">
       <div className="add-glass-panel">
         <header className="add-header">
           <Link href="/" className="btn-back-home">← Dashboard</Link>

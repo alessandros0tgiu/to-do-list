@@ -20,13 +20,6 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
 }
 
-.form-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-}
-
 .input-field {
   width: 100%;
   padding: 16px 20px;
@@ -123,24 +116,6 @@
   }
 }
 
-.btn-ghost {
-  padding: 8px 16px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: #64748b;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-}
-
-.btn-ghost.secondary {
-  background: #f1f5f9;
-}
-
-.btn-ghost:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
 .separator {
   text-align: center;
   margin: 30px 0;
@@ -177,16 +152,6 @@
   .h1-super {
     font-size: 1.8rem;
   }
-}
-
-.add-page-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #fcfcfd;
-  /* Sfondo pulito */
-  padding: 20px;
 }
 
 .add-glass-panel {
@@ -232,27 +197,6 @@
   color: #000;
 }
 
-.add-error {
-  background: #fef2f2;
-  color: #dc2626;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #fee2e2;
-}
-
-.add-separator {
-  text-align: center;
-  margin: 30px 0;
-  color: #94a3b8;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.add-fade-in {
-  animation: addFade 0.4s ease-out;
-}
 
 @keyframes addFade {
   from {
